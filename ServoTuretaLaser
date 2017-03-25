@@ -1,0 +1,73 @@
+#include <Servo.h>
+ 
+int servoPin1 = 7, servoPin2 = 8; // servo motors pins
+int potPin1 = A0, potPin2 = A1;   // potentiometers pins
+Servo servo1, servo2; // servo motor "handlers"
+int servox=90,servoy=90;
+int angleY;
+ 
+void setup()
+{
+  // Connect to the 2 servo motors
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
+ 
+  // Configure the 2 pot pins as input
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+ 
+  Serial.begin(9600);
+  // Start the serial monitor
+}
+ 
+void loop()
+{
+  Serial.print("Writing angles ");
+  // Read potentiometer1 and write to servo 1, also print on serial monitor
+  int x,y;
+  int reading = analogRead(potPin1);
+
+
+  if (reading>600 && reading<1024)
+  {
+    x=map(reading,600,1023,1,10);
+    servox=servox+x;
+   }
+
+   if(reading<450 && reading>=0)
+   {
+    x=map(reading,0,450,10,1);
+    servox=servox-x;
+    }
+
+    if(servox<0)
+    servox=0;
+    if(servox>165)
+    servox=165;
+  servo1.write(servox); \
+  Serial.print("x: "); 
+  Serial.println(servox); 
+  
+   reading = analogRead(potPin2);
+   if (reading>600 && reading<1024)
+  {
+        y=map(reading,600,1023,1,10);
+
+    servoy=servoy+y;
+   }
+
+   if(reading<450 && reading>=0)
+   {
+    y=map(reading,0,450,10,1);
+    servoy=servoy-y;
+    }
+
+    if(servoy<0)
+    servoy=0;
+    if(servoy>165)
+    servoy=165;
+    servo2.write(servoy);  
+  Serial.print("y: "); 
+  Serial.println(servoy);
+        delay(50);
+}
