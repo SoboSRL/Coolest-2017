@@ -1,0 +1,28 @@
+int state = 0;
+int initx = 0;
+int finx = 0;
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(6,INPUT_PULLUP); 
+  pinMode(2, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if(digitalRead(6) == LOW) {
+    Serial.println("Apasat");
+    initx = digitalRead(6);
+    delay(115);
+    finx = digitalRead(6);
+    if(initx==finx)
+      state = ~state;
+  }
+  else
+    Serial.println("Morcov");
+  if(state == 0)
+    digitalWrite(2, LOW);
+  else
+    digitalWrite(2, HIGH);
+
+  
+}
